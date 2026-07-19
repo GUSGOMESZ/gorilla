@@ -17,7 +17,7 @@ defmodule GorillaWeb.Router do
   scope "/", GorillaWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", GorillaLive
   end
 
   # Other scopes may use custom stacks.
