@@ -16,7 +16,7 @@ defmodule GorillaWeb.GorillaLive do
   def render(assigns) do
     ~H"""
     <div id="pull-up-tracker" class="flex flex-col items-center gap-6 py-12">
-        <h1 class="text-2xl font-semibold">Pull Ups Rafael</h1>
+        <h1 class="text-2xl font-semibold">Pull Ups</h1>
         <div class="flex flex-row items-center gap-4">
           <button
             phx-click="navigate"
