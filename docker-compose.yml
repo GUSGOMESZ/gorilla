@@ -1,0 +1,39 @@
+services:
+  app:
+    image: hexpm/elixir:1.17.2-erlang-26.2.5.2-debian-trixie-20260610-slim
+    restart: unless-stopped
+    working_dir: /app
+    command: >
+      sh -c "
+        apt-get update -qq &&
+        apt-get install -y -qq --no-install-recommends git > /dev/null &&
+        mix local.hex --force &&
+        mix local.rebar --force &&
+        mix deps.get &&
+        mix assets.setup &&
+        mix phx.server
+      "
+    environment:
+      MIX_ENV: dev
+      DOCKER: "true"
+      POSTGRES_HOST: postgres
+    volumes:
+      - .:/app
+      - mix_deps:/app/deps
+      - mix_build:/app/_build
+      - mix_home:/root/.mix
+      - hex_home:/root/.hex
+    ports:
+      - "47215:4000"
+    networks:
+      - database_default
+
+networks:
+  database_default:
+    external: true
+
+volumes:
+  mix_deps:
+  mix_build:
+  mix_home:
+  hex_home:

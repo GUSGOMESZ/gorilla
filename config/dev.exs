@@ -4,7 +4,7 @@ import Config
 config :gorilla, Gorilla.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: System.get_env("POSTGRES_HOST", "localhost"),
   database: "gorilla_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
@@ -18,8 +18,9 @@ config :gorilla, Gorilla.Repo,
 # to bundle .js and .css sources.
 config :gorilla, GorillaWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
-  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}],
+  # Inside Docker, Docker's port forwarding can't reach a loopback-only bind,
+  # so DOCKER=true (set in docker-compose.yml) switches this to 0.0.0.0.
+  http: [ip: if(System.get_env("DOCKER"), do: {0, 0, 0, 0}, else: {127, 0, 0, 1})],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,

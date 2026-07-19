@@ -2,7 +2,7 @@ defmodule GorillaWeb.GorillaLive do
   use GorillaWeb, :live_view
 
   def mount(_params, _session, socket) do
-    today = Date.utc_today()
+    today = DateTime.utc_now() |> DateTime.add(-3, :hour) |> DateTime.to_date()
 
     pull_up_reps = 10
 
@@ -16,7 +16,7 @@ defmodule GorillaWeb.GorillaLive do
   def render(assigns) do
     ~H"""
     <div id="pull-up-tracker" class="flex flex-col items-center gap-6 py-12">
-        <h1 class="text-2xl font-semibold">Pull Ups</h1>
+        <h1 class="text-2xl font-semibold">Pull Ups Rafael</h1>
         <div class="flex flex-row items-center gap-4">
           <button
             phx-click="navigate"
@@ -40,7 +40,7 @@ defmodule GorillaWeb.GorillaLive do
           </button>
         </div>
 
-        <p class="text-6xl font-bold tabular-nums">{length(@done_sets) * 10}</p>
+        <p class="text-6xl font-bold tabular-nums">{length(@done_sets) * @pull_up_reps}</p>
 
         <div class="grid grid-cols-5 gap-3">
           <button
